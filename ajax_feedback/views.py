@@ -18,14 +18,6 @@ class ContactFormView(FormView):
     def form_invalid(self, form):
         return form.result(False, form.get_form_errors())
 
-    def get_initial(self):
-        initial = super(ContactFormView, self).get_initial()
-        # for auth users auto add username as name
-        if self.request.user.is_authenticated():
-            initial['name'] = self.request.user.username
-            initial['email'] = self.request.user.email
-        return initial
-
     def get_form_class(self):
         if self.request.user.is_authenticated():
             return AuthContactForm

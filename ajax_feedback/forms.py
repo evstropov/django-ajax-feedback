@@ -3,7 +3,6 @@ from django import forms
 from django.http import HttpResponse
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-from captcha.fields import ReCaptchaField
 
 
 class AjaxFormMixin(forms.Form):
@@ -24,7 +23,7 @@ class AjaxFormMixin(forms.Form):
         if not self.prefix:
             return self.errors
         prefixed_errors = {}
-        for k, v in self.errors.items():
+        for k, v in self.errors.iteritems():
             prefixed_errors[self.prefix + '-' + k] = v
         return prefixed_errors
 
@@ -44,8 +43,11 @@ class AuthContactForm(BaseForm):
 
 
 if getattr(settings, 'AJAX_FEEDBACK_CAPTCHA', False):
-    class GuestContactForm(BaseForm):
-        pass
-else:
+    from captcha.fields import ReCaptchaField
+
+
     class GuestContactForm(BaseForm):
         captcha = ReCaptchaField(label='')
+else:
+    class GuestContactForm(BaseForm):
+        pass

@@ -1,5 +1,6 @@
 (function($) {
-    $.fn.ajaxFeedback = function(form, settings) {
+    $.fn.ajaxFeedback = function(settings) {
+        var form = $(this);
         settings = $.extend({
             messagesBlock: null,
             beforeSend: null,
@@ -41,7 +42,6 @@
                     form.find('.has-error').find('.help-block-error').remove().end().removeClass('has-error')
                 },
                 success: function(response) {
-
                     if (response.status == true) {
                         if ($.isFunction(settings.successCallback))
                             settings.successCallback(response);
