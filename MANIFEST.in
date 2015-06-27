@@ -1,0 +1,6 @@
+include LICENSE
+include README.md
+recursive-include ajax_feedback/locale *
+recursive-include ajax_feedback/static *
+recursive-include ajax_feedback/templates *
+recursive-exclude * *.pyc
