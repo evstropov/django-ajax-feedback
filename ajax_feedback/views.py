@@ -18,6 +18,14 @@ class ContactFormView(FormView):
     def form_invalid(self, form):
         return form.result(False, form.get_form_errors())
 
+    def get_form_kwargs(self):
+        kwargs = super(ContactFormView, self).get_form_kwargs()
+        username = self.request.user.get_username()
+        if not kwargs['initial'].get('name') and username:
+            kwargs['initial']['name'] = username
+            kwargs['initial']['email'] = self.request.user.email
+        return kwargs
+
     def get_form_class(self):
         if self.request.user.is_authenticated():
             return AuthContactForm

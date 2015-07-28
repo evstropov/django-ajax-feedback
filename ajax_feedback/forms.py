@@ -3,6 +3,7 @@ from django import forms
 from django.http import HttpResponse
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+from django.utils.module_loading import import_string
 
 
 class AjaxFormMixin(forms.Form):
@@ -34,20 +35,26 @@ class AjaxFormMixin(forms.Form):
 class BaseForm(AjaxFormMixin):
     name = forms.CharField(label=_('Your Name'), max_length=64)
     email = forms.EmailField(label=_('E-mail'), max_length=100)
-    message = forms.CharField(label=_('Message'),  max_length=getattr(settings, 'AJAX_FEEDBACK_MESSAGE_MAX_LEN', 500),
+    message = forms.CharField(label=_('Message'),
+                              max_length=getattr(settings, 'AJAX_FEEDBACK_MESSAGE_MAX_LEN', 500),
                               widget=forms.Textarea())
 
 
-class AuthContactForm(BaseForm):
+if getattr(settings, 'AJAX_FEEDBACK_FORM', False):
+    ContactForm = import_string(settings.AJAX_FEEDBACK_FORM)
+else:
+    ContactForm = BaseForm
+
+
+class AuthContactForm(ContactForm):
     name = forms.CharField(label=_('Your Name'), max_length=64, widget=forms.HiddenInput)
 
 
 if getattr(settings, 'AJAX_FEEDBACK_CAPTCHA', False):
     from captcha.fields import ReCaptchaField
 
-
-    class GuestContactForm(BaseForm):
+    class GuestContactForm(ContactForm):
         captcha = ReCaptchaField(label='')
 else:
-    class GuestContactForm(BaseForm):
+    class GuestContactForm(ContactForm):
         pass

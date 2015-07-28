@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name='django-ajax-feedback',
+    name='django-ajaxfeedback',
     version=__import__('ajax_feedback').__version__,
     description='Django easy ajax feedback form.',
     author='Evstropov Nikita',
