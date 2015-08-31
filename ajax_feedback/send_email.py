@@ -52,7 +52,7 @@ class SendEmail:
 
     def get_body(self, form_data):
         message = form_data.get('message')
-        template = self.subject_template
+        template = self.body_template
         string = _render_template(template, {
             'message': message,
             'site_name': self.site_name,
