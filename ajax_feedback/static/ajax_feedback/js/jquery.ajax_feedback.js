@@ -29,7 +29,7 @@
 
         form.on("submit", function(e) {
             e.preventDefault();
-
+            if ($(this).hasClass('disabled')) return;
             $.ajax({
                 data: form.serialize(),
                 dataType: 'json',
