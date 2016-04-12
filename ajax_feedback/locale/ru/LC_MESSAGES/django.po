@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-04 22:29+0600\n"
+"POT-Creation-Date: 2016-04-12 23:37+0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,22 +19,24 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ajax_feedback/forms.py:36 ajax_feedback/forms.py:44
+#: conf.py:20
+msgid "Message sent successfully"
+msgstr "Сообщение успешно отправлено"
+
+#: conf.py:21
+msgid "Failed send message, please try again or contact with administrator"
+msgstr ""
+"Ошибка отправки сообщения, пожалуйста попробуйте еще раз или свяжитесь а "
+"администратором"
+
+#: forms.py:28 forms.py:39
 msgid "Your Name"
 msgstr "Ваше Имя"
 
-#: ajax_feedback/forms.py:37
+#: forms.py:29
 msgid "E-mail"
 msgstr "E-mail"
 
-#: ajax_feedback/forms.py:38
+#: forms.py:30
 msgid "Message"
 msgstr "Сообщение"
-
-#: ajax_feedback/send_email.py:16
-msgid "Message from website"
-msgstr "Сообщение с сайта"
-
-#: ajax_feedback/send_email.py:19
-msgid "{{ site_name }}: {{ subject }} from {{ form_data.name }}"
-msgstr "{{ site_name }}: {{ subject }} от {{ form_data.name }}"

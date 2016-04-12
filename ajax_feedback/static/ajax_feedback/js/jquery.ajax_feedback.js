@@ -2,30 +2,13 @@
     $.fn.ajaxFeedback = function(settings) {
         var form = $(this);
         settings = $.extend({
-            messagesBlock: null,
+            messagesBlock: form,
             beforeSend: null,
-            successCallback: null,
-            validationErrorCallback: null,
+            successCallback: defaultSuccessCallback,
+            validationErrorCallback: defaultValidationErrorCallback,
             errorCallback: null,
-            completeCallback: null
+            completeCallback: defaultCompleteCallback
         }, settings);
-
-        function defaultValidationErrorCallback(response) {
-            $.each(response.data, function(index, value){
-                if (index == '__all__')
-                    messagesBlock.append('<div class="alert alert-danger fade in">'
-                        +'<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>'
-                        +value+'</div>');
-                else {
-                    var field =  form.find('#id_' + index);
-                    field.parents('.form-group').addClass('has-error');
-                    field.after('<span class="help-block help-block-error">'+value+'</span>');
-                }
-            })
-        }
-
-        var messagesBlock = settings.messagesBlock || form,
-            validationErrorCallback = settings.validationErrorCallback || defaultValidationErrorCallback;
 
         form.on("submit", function(e) {
             e.preventDefault();
@@ -38,22 +21,50 @@
                 error: settings.errorCallback,
                 beforeSend: function() {
                     if ($.isFunction(settings.beforeSend))
-                        settings.beforeSend(form, messagesBlock);
+                        settings.beforeSend(form, settings.messagesBlock);
+                    form.find('.ajax-feedback-msg').remove();
                     form.find('.has-error').find('.help-block-error').remove().end().removeClass('has-error')
                 },
                 success: function(response) {
                     if (response.status == true) {
                         if ($.isFunction(settings.successCallback))
-                            settings.successCallback(response);
+                            settings.successCallback(response, form, settings.messagesBlock);
                     }
                     else
-                        validationErrorCallback(response);
+                        settings.validationErrorCallback(response, form, settings.messagesBlock);
                 },
                 complete: function () {
                     if ($.isFunction(settings.completeCallback))
-                        settings.completeCallback(form, messagesBlock);
+                        settings.completeCallback(form, form, settings.messagesBlock);
                 }
             });
         });
     };
+
+    function addMsg(sel, text, type) {
+        sel.prepend('<div class="alert alert-'+type+' fade in ajax-feedback-msg">'
+                    +'<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>'
+                    +text+'</div>');
+    }
+
+    function defaultSuccessCallback(response, form, msgBlock) {
+        console.log(response.data);
+        addMsg(msgBlock, response.data, 'success');
+    }
+
+    function defaultCompleteCallback(response, form) {
+        form.find('input[type=text], textarea').val('');
+    }
+
+    function defaultValidationErrorCallback(response, form, msgBlock) {
+        $.each(response.data, function(index, value){
+            if (index == '__all__')
+                addMsg(msgBlock, value, 'danger');
+            else {
+                var field =  form.find('#id_' + index);
+                field.parents('.form-group').addClass('has-error');
+                field.after('<span class="help-block help-block-error">'+value+'</span>');
+            }
+        })
+    }
 })(jQuery);
