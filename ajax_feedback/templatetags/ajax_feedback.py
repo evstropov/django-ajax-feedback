@@ -3,8 +3,8 @@ from __future__ import unicode_literals
 
 from django import template
 
-from ajax_feedback.conf import AJAX_FEEDBACK_SETTINGS
-from ajax_feedback.forms import get_form_class
+from ..conf import AJAX_FEEDBACK_SETTINGS
+from ..forms import get_form_class
 
 register = template.Library()
 
