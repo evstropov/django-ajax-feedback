@@ -3,4 +3,5 @@ include README.md
 recursive-include ajax_feedback/locale *
 recursive-include ajax_feedback/static *
 recursive-include ajax_feedback/templates *
+recursive-include ajax_feedback/templatetags *
 recursive-exclude * *.pyc
